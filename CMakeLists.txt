@@ -5,6 +5,7 @@ project(Genie)
 
 add_subdirectory(vendor/glfw)
 add_subdirectory(vendor/glad)
+add_subdirectory(vendor/imgui)
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
@@ -15,6 +16,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
     glad
     glfw
+    imgui
     OpenGL::GL
 )
 
@@ -22,4 +24,5 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
     vendor/glad/include
     vendor/glfw/include
+    vendor/imgui
 )
