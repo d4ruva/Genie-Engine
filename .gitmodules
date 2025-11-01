@@ -1,0 +1,7 @@
+[submodule "vendor/glad"]
+	path = vendor/glad
+	url = https://github.com/d4ruva/glad-cmake-submodule
+
+[submodule "vendor/glfw"]
+	path = vendor/glfw
+	url = https://github.com/glfw/glfw.git
