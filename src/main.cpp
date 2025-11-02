@@ -50,10 +50,10 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
-        // positions         // colors
-         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+        // positions         
+         0.5f, -0.5f, 0.0f,  
+        -0.5f, -0.5f, 0.0f,  
+         0.0f,  0.5f, 0.0f,  
     };
 
     unsigned int VBO, VAO;
@@ -65,11 +65,11 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    // glEnableVertexAttribArray(1);
 
 
     // uncomment this call to draw in wireframe polygons.
@@ -97,7 +97,8 @@ int main()
         {
             float timeValue = glfwGetTime();
             float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-            ourShader.set4fv("aColor", glm::vec4(1, 0, 0, 1));
+            std::cout << greenValue << std::endl;
+            ourShader.set4fv("ourColor", glm::vec4(0, greenValue, 0, 1));
         }
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

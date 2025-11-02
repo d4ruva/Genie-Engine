@@ -8,7 +8,7 @@
 #include <sstream>
 #include <iostream>
 
-#include "glm/vec4.hpp"
+#include "glm/glm.hpp"
 
 class Shader{
 public:
