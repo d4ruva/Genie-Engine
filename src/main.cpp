@@ -5,6 +5,10 @@
 
 #include "shader.h"
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
@@ -37,6 +41,15 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    //Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+
     // glad: load all OpenGL function pointers
     // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -44,6 +57,9 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
 
     Shader ourShader("assets/shaders/shader.vert", "assets/shaders/shader.frag");
 
@@ -55,6 +71,8 @@ int main()
         -0.5f, -0.5f, 0.0f,  
          0.0f,  0.5f, 0.0f,  
     };
+
+    glm::vec4 triColor = glm::vec4(1);
 
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
@@ -83,6 +101,12 @@ int main()
         // -----
         processInput(window);
 
+        // imgui
+        // -----
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        
         // render
         // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -95,11 +119,27 @@ int main()
         // glBindVertexArray(0); // no need to unbind it every time 
 
         {
-            float timeValue = glfwGetTime();
-            float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-            std::cout << greenValue << std::endl;
-            ourShader.set4fv("ourColor", glm::vec4(0, greenValue, 0, 1));
+            // float timeValue = glfwGetTime();
+            // float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+            // std::cout << greenValue << std::endl;
+
+            ourShader.set4fv("ourColor", triColor);
+
+            ImGui::ShowDemoWindow();
+            ImGui::Begin("Hello");
+            ImGui::ColorEdit3("Triangle Color", &triColor.x);
+            ImGui::End();
         }
+        ImGui::Render();
+
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            GLFWwindow* backup_current_context = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(backup_current_context);
+        }        
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

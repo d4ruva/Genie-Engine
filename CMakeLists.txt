@@ -29,8 +29,8 @@ add_custom_command(
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${ASSETS_SOURCE_DIR}"
-        #"${ASSETS_DESTINATION_DIR}/${CMAKE_CONFIGURATION_TYPE}/assets"
-        "${ASSETS_DESTINATION_DIR}/Debug/assets"
+        "${ASSETS_DESTINATION_DIR}/${CMAKE_CONFIGURATION_TYPE}/assets"
+        # "${ASSETS_DESTINATION_DIR}/Debug/assets"
     COMMENT "Copying assets to build directory..."
 )
 
